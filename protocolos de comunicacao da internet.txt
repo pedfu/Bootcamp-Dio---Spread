@@ -1,0 +1,47 @@
+PROTOCOLO HTTP
+Cliente da um request (Objetos web) e o servidor da um response (Protocolo TCP).
+
+
+TCP - Transmission Control Protocol
+Envia um request e espera a response (bloqueia qualquer outra requisicao ate chegar a response) -> atualmente eh possivel fazer ate 6 requisicoes juntas. 
+
+
+REQUEST/RESPONSE
+Estrutura request -> ASCII -> Metodo (get/post/...), Versao, URL, Tipo de Conexao, Agente (browser) e preferencias do cliente (idioma, ...)
+
+Estrutura response -> status line (tipo de conexao, data (DD/MM/YY), server, last-modified, content-length, tipo do conteudo) e o entity body (data -> arquivos)
+
+
+COOKIES e CACHE
+Cookies -> pequenos blocos de dados para persistir dados no dispositivo do cliente
+Browser vai no server da amazon e verifica se o id do user ja existe, se nao, ele cria o id, se sim, ele pega os cookies e conecta.
+
+Cookies de sessao -> apagados a cada sessao
+Cookies persistentes -> cookies que ficam por muito tempo, ex. de login
+
+Cache -> intermediario que verifica se tem os dados que o usuario requisitou, se tiver ele responde e dai nao precisa mandar o requrest pro servidor. Caso nao tenha, ele pede do servidor mesmo.(tambem chamado de proxy)
+
+
+SEGURANCA DA INFORMACAO
+chave simetrica -> usa uma mesma chave para encriptografar e desincriptografar
+chave assimetrica -> usa a chave publica para encriptografar e a privada para desincriptografar
+
+
+SSL -> secure socket layer
+Seguranca sobre operacoes TCP -> usuario malicioso eh impedido de fazer fishing ou modificar a mensagem
+3 etapas:
+-handshake: conexao tcp comeca, cliente recebe a resposta e confirma. Depois confirma autenticidade por meio da certificacao (forma de mostrar que o cliente eh verdadeiro) e nessa certificacao tem a chave publica.Dai a Master Secret Key eh usada para descriptografar.
+-Key derivation -> Master Secret Key -> K(key) + MS(MAC do usuario + SEK do usuario + o mesmo do cliente)
+-data
+
+
+WebSocket
+Atualizar dados com muita frequencia (ex. agar.io)
+Os dados que precisam de constante atualizacao nao usam http pq demoraria muito e traria overhead, ja que precisa esperar a resposta para fazer outra requisicao
+Na etapa handshake, ele abre uma conexao com servidor, e a cada upgrade, o servidor manda um upgrade para ele. O server nao precisa esperar por um pedido para mandar dados, dai em jogos online, ele pode mandar dados quando eles forem atualizados sem esperar o pedido do cliente
+
+
+COMUNICACAO RESUMIDA
+Cliente pede conexao pro DNS, cria conecao HTTP com server. Se os objetos que eu quero estiverem no proxy, ele manda de volta, se nao, ele cria uma nova conexao com o server e faz um update e retorna pro cliente.
+Numa comunicacao com muitos clientes solicitando ao mesmo tempo, existe o load balancer, que verifca os servidores disponivel e faz a distribuicao de carga entre os servidores. Tambem faz a multiplexacao, ou seja, junta requisicoes iguais e retorna uma mesma resposta.
+ 
